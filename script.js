@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // arrow to scroll
     const getScrollTop = () => {
         const toTop = document.getElementById('totop'),
-            headerMain = document.querySelector('.header-main');
+            headerMain = document.querySelector('.header-main'),
+            topMenu = document.querySelector('.top-menu');
 
         window.addEventListener('scroll', () => {
             if(document.documentElement.scrollTop > headerMain.offsetHeight) {
@@ -65,6 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 toTop.style.display = 'none';
             }
+
+            if(topMenu.getBoundingClientRect().top <= 0 && document.body.clientWidth < 768 && document.documentElement.scrollTop !== 0) {
+                topMenu.style.position = 'fixed';
+            } else {
+                topMenu.style.position = 'unset';
+            }
+
         });
 
         toTop.addEventListener('click', (event) => {
@@ -84,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clientWidth = () => {
             document.body.clientWidth < 768 ? menuButton.style.display = "block" : menuButton.style.display = "none";
         };
+
         clientWidth();
 
         window.addEventListener('resize', () => {
