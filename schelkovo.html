@@ -371,8 +371,8 @@
     </div>
 </section>
 <section id="services">
-    <div class="wrapper">
-        <h2>услуги наших клубов</h2>
+    <h2>услуги наших клубов</h2>
+    <div class="wrapper" id="services-wrapper">
         <div class="services-slider">
             <div class="slide">
                 <img src="images/services-slider/akva.jpg" alt="Аква территория">
@@ -425,6 +425,8 @@
                 <p>Йога - идеальны не только физическая форма, но и эмоциональное состояние</p>
             </div>
         </div>
+        <button class="slider-arrow prev" id="arr-left"></button>
+        <button class="slider-arrow next" id="arr-right"></button>
     </div>
 </section>
 <section id="banner">
@@ -597,5 +599,35 @@
     </div>
 </div>
 <script src="./script.js"></script>
+<script src="./sliderCarousel.js"></script>
+<script>
+    const carousel = new SliderCarousel({
+        main: '#services-wrapper',
+        wrap: '.services-slider',
+        next: '#arr-right',
+        prev: '#arr-left',
+        slidesToShow: 5,
+        infinity: true,
+        responsive: [{
+            breakpoint: 1200,
+            slideToShow: 4
+        },
+        {
+            breakpoint: 1024,
+            slideToShow: 3
+        },
+        {
+            breakpoint: 768,
+            slideToShow: 2
+        },
+        {
+            breakpoint: 576,
+            slideToShow: 1
+        }
+        ]
+    });
+
+    carousel.init();
+</script>
 </body>
 </html>

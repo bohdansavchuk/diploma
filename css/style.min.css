@@ -1552,17 +1552,17 @@ nav.popup-menu .close-menu-btn img {
     margin-right: 5px
 }
 
+#services-wrapper {
+    padding: 0;
+}
+
 .services-slider {
     display: flex;
     margin: 0 auto;
-    padding-left: 15px;
-    padding-right: 15px
 }
 
 .services-slider .slide {
     text-align: center;
-    margin-right: 6px;
-    margin-left: 6px;
     width: 210px
 }
 
@@ -1588,7 +1588,7 @@ nav.popup-menu .close-menu-btn img {
     margin: 0 auto
 }
 
-.services-slider .slider-arrow {
+#services-wrapper .slider-arrow {
     position: absolute;
     top: 75px;
     margin-top: -18px;
@@ -1596,22 +1596,29 @@ nav.popup-menu .close-menu-btn img {
     cursor: pointer
 }
 
-.services-slider .slider-arrow span {
+#services-wrapper .slider-arrow {
     display: block;
     width: 36px;
     height: 37px;
     background-color: #f4c71b;
     border-radius: 50%;
+    border: none;
     text-align: center;
     padding-top: 11px
 }
 
-.services-slider .slider-arrow.prev {
-    left: 2px
+#services-wrapper .slider-arrow.prev {
+    left: 2px;
+    background-image: url(../images/arrow-left.png);
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.services-slider .slider-arrow.next {
-    right: 2px
+#services-wrapper .slider-arrow.next {
+    right: 2px;
+    background-image: url(../images/arrow-right.png);
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 #gallery {
