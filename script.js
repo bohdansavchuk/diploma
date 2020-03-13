@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         e.style.display = 'block';
                     }
 
-                    let overlay = e.querySelector('.overlay');
-                    let close = e.querySelector('.close_icon');
+                    let overlay = e.querySelector('.overlay'),
+                        close = e.querySelector('.close_icon');
 
                     e.addEventListener('click', (event) => {
                         let target = event.target;
@@ -50,8 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
             });
         });
-
-
     };
 
     getPopup();
@@ -225,5 +223,31 @@ document.addEventListener('DOMContentLoaded', () => {
         arrL: '#arrow-left',
         arrR: '#arrow-right'
     });
+
+    // gift
+    const getGift = () => {
+        const fixedGift = document.querySelector('.fixed-gift'),
+            giftPopup = document.getElementById('gift');
+
+        let overlay = giftPopup.querySelector('.overlay'),
+            close = giftPopup.querySelector('.close_icon');
+
+        document.addEventListener('click', () => {
+           let target = event.target;
+
+            console.log(target);
+
+            if(target.closest('.fixed-gift')){
+                giftPopup.style.display = 'block';
+                fixedGift.style.display = 'none';
+            }
+
+            if(target.contains(overlay) || target.contains(close) || target.matches('.close-btn')) {
+                giftPopup.style.display = 'none';
+            }
+        });
+    }; 
+
+    getGift();
 
 });
