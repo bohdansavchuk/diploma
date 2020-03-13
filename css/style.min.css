@@ -2320,6 +2320,10 @@ p.personal-data input[type=checkbox]:checked+label:before {
 }
 
 @media only screen and (max-width:991px) {
+    .main-slider .slide {
+        width: 100%;
+    }
+    
     .hidden-991 {
         display: none !important
     }

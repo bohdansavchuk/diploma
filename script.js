@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // menu
     const toggleMenu = () => {
-        const menuButton = document.querySelector('.menu-button');
+        const menuButton = document.querySelector('.menu-button'),
+            menu = document.querySelector('.popup-menu');
 
         const clientWidth = () => {
             document.body.clientWidth < 768 ? menuButton.style.display = "block" : menuButton.style.display = "none";
@@ -89,6 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.addEventListener('resize', () => {
             clientWidth();
+        });
+
+        document.addEventListener('click', (event) => {
+            let target = event.target;
+
+            if(target.closest('.menu-button')) {
+                menu.style.display = 'flex';
+            }
+
+            if(target.closest('.close-menu-btn') || target.closest('.scroll')) {
+                menu.style.display = 'none';
+            }
         });
 
     };
@@ -155,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             prevSlide(slide, currentSlide, 'portfolio-item-active');
             prevSlide(dot, currentSlide, 'dot-active');
-            
+
             if(target.matches(arrR)) {
                 currentSlide++;
             } else if(target.matches(arrL)) {
