@@ -262,97 +262,206 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getGift();
 
+    // send form
+    const sendForm = () => {
+        const form = document.querySelectorAll('form'),
+            formPhone = document.querySelectorAll('[type="tel"]'),
+            formName = document.querySelectorAll('[name="name"]'),
+            thanksPopup = document.getElementById('thanks'),
+            popupContent = thanksPopup.querySelector('.form-content'),
+            loadMessage = 'images/yin-yang.svg';
+        
+        let spinInterval,
+            count = 0,
+            overlay = thanksPopup.querySelector('.overlay'),
+            close = thanksPopup.querySelector('.close_icon');
+
+        document.addEventListener('click', () => {
+            let target = event.target;
+
+            if(target.contains(overlay) || target.contains(close) || target.matches('.close-btn')) {
+                thanksPopup.style.display = 'none';
+            }
+        });
+    
+        formPhone.forEach((item) => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^0-9+]/ig, '');
+            });
+        });
+    
+        formName.forEach((item) => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^\s/а-яА-Яa]/, '');
+            });
+        });
+    
+        const statusMessage = document.createElement('img');
+    
+        let spin = function() {
+            spinInterval = requestAnimationFrame(spin);
+            if(count < 500) {
+                count++;
+                statusMessage.style.transform = `rotate(${count*3}deg)`;
+            }
+        };
+    
+        form.forEach((item) => {
+            item.addEventListener('submit', (event) => {
+                event.preventDefault();
+                item.appendChild(statusMessage);
+                statusMessage.src = loadMessage;
+                spinInterval = requestAnimationFrame(spin);
+                const formData = new FormData(item);
+                let body = {};
+                formData.forEach((val, key) => {
+                    body[key] = val;
+                });
+                postData(body)
+                    .then((response) => {
+                        if (response.status !== 200) {
+                            throw new Error('status network not 200');
+                        }
+                        cancelAnimationFrame(spinInterval);
+                        statusMessage.style.transform = 'unset';
+                        thanksPopup.style.display = 'block';
+                        let inputs = item.querySelectorAll('input');
+                        inputs.forEach((item) => {
+                            item.value = '';
+                            item.checked = false;
+                        });
+                        let inStart = () => {
+                            statusMessage.remove();
+                            inputs.forEach((item) => {
+                                item.classList.remove('success');
+                            });
+                        };
+                        setTimeout(inStart, 3000);
+                        
+                    })
+                    .catch((error) => {
+                        cancelAnimationFrame(spinInterval);
+                        statusMessage.style.transform = 'unset';
+                        thanksPopup.style.display = 'block';
+                        popupContent.innerHTML = `
+                        <h4>Ошибка!</h4>
+                        <p>Ваша заявка не отправлена. <br> Заполните форму ещё раз, пожалуйста!</p>
+                        <button class="btn close-btn" wfd-id="216">OK</button>
+                        `;
+                        console.error(error);
+                    });
+            });
+        });
+    
+        const postData = (body) => {
+    
+            return fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+        };
+    };
+    
+    sendForm();
+
     // calc
     const calc = () => {
-        const time = document.querySelector('.time'),
+
+        const cardCalc = document.getElementById('card-calc');
+
+        if (cardCalc) {
+            const time = document.querySelector('.time'),
             timeInputs = time.querySelectorAll('input'),
-            cardOrder = document.getElementById('card_order'),
             mozaikaClub = document.getElementById('card_leto_mozaika'),
             total = document.getElementById('price-total'),
             promo = document.getElementById('promo'),
             priceMoz = ['1999', '9900', '13900', '19900'],
             priceSchel = ['2999', '14900', '21900', '24900'];
 
-        const getCard = () => {
+            const getCard = () => {
 
-            let result = 0;
+                let result = 0;
 
-            if(mozaikaClub.checked) {
-                timeInputs.forEach((elem) => {
-                    if(elem.checked && elem.value === '1') {
-                        result = priceMoz[0];
-                    }else if (elem.checked && elem.value === '6') {
-                        result = priceMoz[1];
-                    }else if (elem.checked && elem.value === '9') {
-                        result = priceMoz[2];
-                    }else if (elem.checked && elem.value === '12') {
-                        result = priceMoz[3];
-                    }
-                });
-            } else {
-                timeInputs.forEach((elem) => {
-                    if(elem.checked && elem.value === '1') {
-                        result = priceSchel[0];
-                    }else if (elem.checked && elem.value === '6') {
-                        result = priceSchel[1];
-                    }else if (elem.checked && elem.value === '9') {
-                        result = priceSchel[2];
-                    }else if (elem.checked && elem.value === '12') {
-                        result = priceSchel[3];
-                    }
-                });
-            }
+                if(mozaikaClub.checked) {
+                    timeInputs.forEach((elem) => {
+                        if(elem.checked && elem.value === '1') {
+                            result = priceMoz[0];
+                        }else if (elem.checked && elem.value === '6') {
+                            result = priceMoz[1];
+                        }else if (elem.checked && elem.value === '9') {
+                            result = priceMoz[2];
+                        }else if (elem.checked && elem.value === '12') {
+                            result = priceMoz[3];
+                        }
+                    });
+                } else {
+                    timeInputs.forEach((elem) => {
+                        if(elem.checked && elem.value === '1') {
+                            result = priceSchel[0];
+                        }else if (elem.checked && elem.value === '6') {
+                            result = priceSchel[1];
+                        }else if (elem.checked && elem.value === '9') {
+                            result = priceSchel[2];
+                        }else if (elem.checked && elem.value === '12') {
+                            result = priceSchel[3];
+                        }
+                    });
+                }
 
-            // функция - оболочка анимации
-            const animateCalc = ({linear, draw, duration}) => {
-                let aniInterval;
-                let start = performance.now();
+                // функция - оболочка анимации
+                const animateCalc = ({linear, draw, duration}) => {
+                    let aniInterval;
+                    let start = performance.now();
 
-                const animateBlock = (time) => {
-                    aniInterval = requestAnimationFrame(animateBlock);
-                    let timeFraction = (time - start) / duration;
-                    if (timeFraction >= 1) {timeFraction = 1;}
+                    const animateBlock = (time) => {
+                        aniInterval = requestAnimationFrame(animateBlock);
+                        let timeFraction = (time - start) / duration;
+                        if (timeFraction >= 1) {timeFraction = 1;}
 
-                    // вычисление текущего состояния анимации
-                    let progress = linear(timeFraction);
+                        // вычисление текущего состояния анимации
+                        let progress = linear(timeFraction);
 
-                    draw(progress); // отрисовать её
-                    if (timeFraction >= 1){
-                        cancelAnimationFrame(aniInterval);
-                    }
+                        draw(progress); // отрисовать её
+                        if (timeFraction >= 1){
+                            cancelAnimationFrame(aniInterval);
+                        }
+                    };
+                    requestAnimationFrame(animateBlock);
                 };
-                requestAnimationFrame(animateBlock);
+
+                animateCalc({
+                    // скорость анимации
+                    duration: 1200,
+                    // функция расчёта времени
+                    linear(timeFraction) {
+                        return timeFraction;
+                    },
+                    draw(progress) {
+                        if(promo.value === 'ТЕЛО2020') {
+                            total.textContent = Math.floor((progress * result) - ((progress * result) * 30 / 100));
+                        } else {
+                            promo.value = '';
+                            total.textContent = Math.floor(progress * result);
+                        }
+                    }
+                });
+
             };
 
-            animateCalc({
-                // скорость анимации
-                duration: 1200,
-                // функция расчёта времени
-                linear(timeFraction) {
-                    return timeFraction;
-                },
-                draw(progress) {
-                    if(promo.value === 'ТЕЛО2020') {
-                        total.textContent = Math.floor((progress * result) - ((progress * result) * 30 / 100));
-                    } else {
-                        promo.value = '';
-                        total.textContent = Math.floor(progress * result);
-                    }
+            getCard();
+
+            cardCalc.addEventListener('change', (event) => {
+                let target = event.target;
+
+                if(target.matches('input')) {
+                    getCard();
                 }
             });
 
         };
-
-        getCard();
-
-        cardOrder.addEventListener('change', (event) => {
-            let target = event.target;
-
-            if(target.matches('input')) {
-                getCard();
-            }
-        });
-
     };
 
     calc();

@@ -203,12 +203,18 @@
         <div class="form-wrapper">
             <form name="banner-form" id="banner-form" action="#" method="post">
                 <input type="hidden" name="form_name" value=" Записаться на визит">
-                <input name="name" type="text" required placeholder="Ваше имя...">
-                <input type="tel" name="phone" id="phone" required placeholder="Ваш номер телефона...">
-                <button name="send" class="btn" type="submit">Записаться</button>
+                <div style="display: flex; justify-content: center;">
+                    <div style="display: flex; flex-direction: column-reverse;">
+                        <input id="form1-name" name="name" type="text" placeholder="Ваше имя...">
+                    </div>
+                    <div style="display: flex; flex-direction: column-reverse;">
+                        <input type="tel" name="phone" id="form1-phone" placeholder="Ваш номер телефона...">
+                    </div>
+                    <button name="send" class="btn" type="submit">Записаться</button>
+                </div>
                 <p class="personal-data">
-                    <input type="checkbox" required id="check1"><label for="check1">Я согласен на обработку персональных
-                    данных</label>
+                    <input type="checkbox" id="form1-check">
+                    <label for="form1-check">Я согласен на обработку персональных данных</label>
                 </p>
             </form>
 
@@ -310,37 +316,39 @@
             </div>
             <div class="right">
                 <form action="" id="card_order">
-                    <div class="time">
-                        <input id="m1" type="radio" name="card-type" value="1" checked>
-                        <label for="m1">1 месяц</label>
-                        <input id="m2" type="radio" name="card-type" value="6">
-                        <label for="m2">6 месяцев</label>
-                        <input id="m3" type="radio" name="card-type" value="9">
-                        <label for="m3">9 месяцев</label>
-                        <input id="m4" type="radio" name="card-type" value="12">
-                        <label for="m4">12 месяцев</label>
-                    </div>
-                    <div class="club">
-                        <input type="radio" id="card_leto_mozaika" name="club-name" value="mozaika" checked><label
-                            for="card_leto_mozaika">
-                        <h5>Тело «Мозаика»</h5>
-                        <p>Россия, Москва, 7-я Кожуховская ул., 9</p>
-                    </label>
-                    </div>
-
-                    <div class="club">
-                        <input type="radio" id="card_leto_schelkovo" name="club-name" value="schelkovo"><label
-                            for="card_leto_schelkovo">
-                        <h5>Тело «Щелково»</h5>
-                        <p>Россия, г. Щелково, ул. Советская, д. 16</p>
-                    </label>
-                    </div>
-                    <div class="price">
-                        <div class="price-message input-text">
-                            <input id="promo" name="name" type="text" required placeholder="Промокод">
+                    <div class="card-calc" id="card-calc">
+                        <div class="time">
+                            <input id="m1" type="radio" name="card-type" value="1" checked>
+                            <label for="m1">1 месяц</label>
+                            <input id="m2" type="radio" name="card-type" value="6">
+                            <label for="m2">6 месяцев</label>
+                            <input id="m3" type="radio" name="card-type" value="9">
+                            <label for="m3">9 месяцев</label>
+                            <input id="m4" type="radio" name="card-type" value="12">
+                            <label for="m4">12 месяцев</label>
                         </div>
-                        <div class="price-message">Цена:</div>
-                        <div class="price-message" id="price-total">2999</div>
+                        <div class="club">
+                            <input type="radio" id="card_leto_mozaika" name="club-name" value="mozaika" checked><label
+                                for="card_leto_mozaika">
+                            <h5>Тело «Мозаика»</h5>
+                            <p>Россия, Москва, 7-я Кожуховская ул., 9</p>
+                        </label>
+                        </div>
+    
+                        <div class="club">
+                            <input type="radio" id="card_leto_schelkovo" name="club-name" value="schelkovo"><label
+                                for="card_leto_schelkovo">
+                            <h5>Тело «Щелково»</h5>
+                            <p>Россия, г. Щелково, ул. Советская, д. 16</p>
+                        </label>
+                        </div>
+                        <div class="price">
+                            <div class="price-message input-text">
+                                <input id="promo" name="promo" type="text" placeholder="Промокод">
+                            </div>
+                            <div class="price-message">Цена:</div>
+                            <div class="price-message" id="price-total">2999</div>
+                        </div>
                     </div>
                     <input type="hidden" name="form_name" value="Заказать карту">
                     <p class="input-text"><input name="name" type="text" required placeholder="Ваше имя..."></p>
@@ -520,6 +528,7 @@
 </div>
     <script src="./script.js"></script>
     <script src="./sliderCarousel.js"></script>
+    <script src="plugins/validator/validator.js"></script>
     <script>
         const carousel = new SliderCarousel({
             main: '#services-wrapper',
@@ -547,7 +556,29 @@
             ]
         });
 
-	    carousel.init();
+        carousel.init();
+        
+        const valid = new Validator({
+            selector: '#banner-form',
+            pattern: {
+                phone: /^\+380\d{2}\d{7}$/
+            },
+            method: {
+                'form1-phone': [
+                    ['notEmpty'],
+                    ['pattern', 'phone']
+                ],
+                'form1-name': [
+                    ['notEmpty'],
+                    ['pattern', 'text']
+                ],
+                'form1-check': [
+                    ['checked']
+                ]
+            }
+        }); 
+
+        valid.init();
     </script>
 </body>
 </html>
