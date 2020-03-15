@@ -303,12 +303,15 @@
                 </div>
                 <div class="right">
                     <input type="hidden" name="form_name" value="Заказать карту">
-                    <p class="input-text"><input name="name" type="text" required placeholder="Ваше имя..."></p>
-                    <p class="input-text"><input type="tel" name="phone" id="callback_form-phone" required
-                                                 placeholder="Ваш номер телефона..."></p>
+                    <p class="input-text">
+                        <input name="name" type="text" id="form3-name" placeholder="Ваше имя...">
+                    </p>
+                    <p class="input-text">
+                        <input type="tel" name="phone" id="form3-phone" placeholder="Ваш номер телефона...">
+                    </p>
                     <div class="form-bottom">
                         <p class="personal-data">
-                            <input type="checkbox" required id="card_check"><label for="card_check">Я согласен на
+                            <input type="checkbox" id="card_check"><label for="card_check">Я согласен на
                             обработку персональных данных</label>
                         </p>
                         <p class="submit">
@@ -459,13 +462,13 @@
                 </div>
             </div>
             <div class="right">
-                <form action="#" id="footer_form">
+                <form action="" id="footer_form">
                     <div class="content">
                         <div class="choose-club">
                             <h5>Выбрать клуб</h5>
                             <div class="club">
-                                <input type="radio" id="footer_leto_mozaika" name="club-name" value="mozaika"><label
-                                    for="footer_leto_mozaika">
+                                <input type="radio" id="footer_leto_mozaika" name="club-name" value="mozaika" checked>
+                                <label for="footer_leto_mozaika">
                                 <h6>Тело «Мозаика»</h6>
                                 <p>Россия, Москва, 7-я Кожуховская ул.,&nbsp;9</p>
                             </label>
@@ -481,10 +484,10 @@
                         <div class="call">
                             <p>Единый телефон</p>
                             <p class="tel">+7 (800) 555-64-47</p>
-                            <p class="input-text"><input type="tel" name="phone" id="callback_footer_form-phone"
-                                                         required="" placeholder="Ваш номер телефона..."></p>
-                            <button class="btn callback-btn" type="submit" data-popup="#callback_form">Перезвоните мне
-                            </button>
+                            <p class="input-text">
+                                <input type="tel" name="phone" id="callback_footer_form-phone" placeholder="Ваш номер телефона...">
+                            </p>
+                            <button class="btn callback-btn" type="submit" >Перезвоните мне</button>
                         </div>
                     </div>
                 </form>
@@ -613,26 +616,63 @@
     carousel.init();
 
     const valid = new Validator({
-            selector: '#banner-form',
-            pattern: {
-                phone: /^\+380\d{2}\d{7}$/
-            },
-            method: {
-                'form1-phone': [
-                    ['notEmpty'],
-                    ['pattern', 'phone']
-                ],
-                'form1-name': [
-                    ['notEmpty'],
-                    ['pattern', 'text']
-                ],
-                'form1-check': [
-                    ['checked']
-                ]
-            }
+        selector: '#banner-form',
+        pattern: {
+            phone: /^\+380\d{2}\d{7}$/
+        },
+        method: {
+            'form1-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form1-name': [
+                ['notEmpty'],
+                ['pattern', 'text']
+            ],
+            'form1-check': [
+                ['checked']
+            ]
+        }
     }); 
 
     valid.init();
+
+    const valid2 = new Validator({
+        selector: '#footer_form',
+        pattern: {
+            phone: /^\+380\d{2}\d{7}$/
+        },
+        method: {
+            'callback_footer_form-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ]
+        }
+    }); 
+
+    valid2.init();
+
+    const valid3 = new Validator({
+        selector: '#card_order',
+        pattern: {
+            phone: /^\+380\d{2}\d{7}$/
+        },
+        method: {
+            'form3-phone': [
+                ['notEmpty'],
+                ['pattern', 'phone']
+            ],
+            'form3-name': [
+                ['notEmpty'],
+                ['pattern', 'text']
+            ],
+            'card_check': [
+                ['checked']
+            ]
+        }
+    }); 
+
+    valid3.init();
 </script>
 </body>
 </html>

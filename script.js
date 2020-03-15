@@ -327,8 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         thanksPopup.style.display = 'block';
                         let inputs = item.querySelectorAll('input');
                         inputs.forEach((item) => {
-                            item.value = '';
-                            item.checked = false;
+                            if(item.type !== 'radio' && item.type !== 'hidden') {
+                                item.value = '';
+                            }
                         });
                         let inStart = () => {
                             statusMessage.remove();
