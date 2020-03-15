@@ -526,8 +526,7 @@
         </div>
     </div>
 </div>
-    <script src="./script.js"></script>
-    <script src="./sliderCarousel.js"></script>
+    <script src="plugins/sliderCarousel.js"></script>
     <script src="plugins/validator/validator.js"></script>
     <script>
         const carousel = new SliderCarousel({
@@ -564,15 +563,15 @@
                 phone: /^\+380\d{2}\d{7}$/
             },
             method: {
-                'form2-phone': [
+                'form1-phone': [
                     ['notEmpty'],
                     ['pattern', 'phone']
                 ],
-                'form2-name': [
+                'form1-name': [
                     ['notEmpty'],
                     ['pattern', 'text']
                 ],
-                'form2-check': [
+                'form1-check': [
                     ['checked']
                 ]
             }
@@ -660,8 +659,7 @@
         }); 
 
         valid5.init();
-
-
     </script>
+    <script src="./dist/main.js"></script>
 </body>
 </html>
