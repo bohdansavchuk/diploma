@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/bohdansavchuk/diploma#readme",
   "devDependencies": {
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   }
 }
